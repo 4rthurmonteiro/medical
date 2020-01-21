@@ -6,6 +6,7 @@ final String categoryColumn = "categoria";
 final String professionalColumn = "profissional";
 final String resultValueColumn = "resultadoValor";
 final String resultColumn = "resultado";
+final String equationColumn = "equacao";
 
 final String resultTable = "Resultados";
 
@@ -13,17 +14,19 @@ class Result extends Entity {
 
   int id;
   int patientId;
+  String equation;
   String category;
   String professional;
   String resultValue;
   String result;
 
-  Result({this.id, this.patientId, this.category, this.professional, this.resultValue, this.result});
+  Result({this.id, this.patientId, this.equation,this.category, this.professional, this.resultValue, this.result});
 
   factory Result.fromJson(Map<String, dynamic> json){
     return Result(
       id: json[idColumn],
       patientId: json[patientIdColumn],
+      equation: json[equationColumn],
       category: json[categoryColumn],
       professional: json[professionalColumn],
       resultValue: json[resultValueColumn],
@@ -37,6 +40,7 @@ class Result extends Entity {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data[idColumn] = this.id;
     data[patientIdColumn] = this.patientId;
+    data[equationColumn] = this.equation;
     data[categoryColumn] = this.category;
     data[professionalColumn] = this.professional;
     data[resultValueColumn] = this.resultValue;

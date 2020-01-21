@@ -12,3 +12,11 @@ InputDecoration textFormFieldDecoration({@required String label,@required IconDa
     ),
   );
 }
+InputDecoration equationDecoration({@required String label, @required String hint}) {
+  return InputDecoration(
+    border:
+    OutlineInputBorder(borderSide: new BorderSide(color: textColor)),
+    labelText: label,
+    hintText: hint
+  );
+}

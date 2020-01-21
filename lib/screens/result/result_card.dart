@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:medical/models/patient.dart';
-import 'package:medical/screens/home/patient_sheet.dart';
-import 'package:medical/screens/result/result_screen.dart';
-import 'package:medical/utils/nav.dart';
+import 'package:medical/models/result.dart';
 
-Widget patientCard(BuildContext context, Patient item){
+Widget resultCard(BuildContext context, Result item){
   return GestureDetector(
     child: Container(
       decoration: BoxDecoration(
@@ -23,8 +19,7 @@ Widget patientCard(BuildContext context, Patient item){
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Text("Nome: "),
-                      Text(item.name ?? ""),
+                      Text(item.equation ?? ""),
                     ],
                   ),
                   SizedBox(
@@ -32,8 +27,8 @@ Widget patientCard(BuildContext context, Patient item){
                   ),
                   Row(
                     children: <Widget>[
-                      Text("Data de nascimento: "),
-                      Text(DateFormat("dd/MM/yyyy").format(DateTime.parse(item.dayBirth))),
+                      Text("Categoria: "),
+                      Text(item.category),
                     ],
                   ),
                   SizedBox(
@@ -41,8 +36,8 @@ Widget patientCard(BuildContext context, Patient item){
                   ),
                   Row(
                     children: <Widget>[
-                      Text("Sexo: "),
-                      Text(item.gender == 'M' ? "Masculino" : "Feminino"),
+                      Text("Resultado: "),
+                      Text(item.result),
                     ],
                   ),
                 ]),
@@ -51,9 +46,9 @@ Widget patientCard(BuildContext context, Patient item){
       ),
     ),
     onTap: (){
-      showModalBottomSheet(
-          context: context,
-          builder: (context) => PatientSheet(patient: item,));
+//      showModalBottomSheet(
+//          context: context,
+//          builder: (context) => PatientSheet(patient: item,));
     },
   );
 }

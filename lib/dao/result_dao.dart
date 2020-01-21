@@ -13,4 +13,10 @@ class ResultDao extends BaseDao<Result> {
   // TODO: implement tableName
   String get tableName => resultTable;
 
+  Future<List<Result>> findByPatient(int patientId) async {
+    List<Result> list = await query(
+        'select * from $tableName where $patientIdColumn = ?', [patientId]);
+
+    return list.length > 0 ? list : [];
+  }
 }

@@ -9,7 +9,7 @@ import 'package:medical/models/patient.dart';
 import 'package:medical/screens/home/create_screen.dart';
 import 'package:medical/screens/home/drawer_list.dart';
 import 'package:medical/screens/home/patient_card.dart';
-import 'package:medical/screens/patient/patient_screen.dart';
+import 'package:medical/screens/result/result_screen.dart';
 import 'package:medical/utils/colors.dart';
 import 'package:medical/utils/nav.dart';
 
@@ -58,14 +58,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           }else{
-
+            return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index){
+                  return patientCard(context, snapshot.data[index]);
+                });
           }
 
-          return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, index){
-                return patientCard(context, snapshot.data[index]);
-          });
+
         }
       ),
     );

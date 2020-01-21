@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medical/models/patient.dart';
 import 'package:medical/screens/home/create_screen.dart';
-import 'package:medical/screens/patient/patient_screen.dart';
+import 'package:medical/screens/result/result_screen.dart';
 import 'package:medical/utils/nav.dart';
 
 class PatientSheet extends StatelessWidget {
@@ -16,7 +16,7 @@ class PatientSheet extends StatelessWidget {
       children: <Widget>[
         FlatButton(
           onPressed: (){
-            push(context, PatientScreen(patient: patient));
+            push(context, ResultScreen(patient: patient));
           },
           child: Text("Entrar"),
         ),
