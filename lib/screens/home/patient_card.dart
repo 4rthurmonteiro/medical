@@ -52,8 +52,9 @@ Widget patientCard(BuildContext context, Patient item){
     ),
     onTap: (){
       showModalBottomSheet(
+
           context: context,
-          builder: (context) => PatientSheet(patient: item,));
+          builder: (context) => PatientSheet(patient: item));
     },
   );
 }

@@ -247,8 +247,8 @@ class _CreateScreenState extends State<CreateScreen> with SignUpValidators {
 
       if (success) {
         EventBus.get(context).sendEvent(Event("deletar", "paciente"));
-        Navigator.of(context).pop();
-      }
+        int count = 0;
+        Navigator.of(context).popUntil((_) => count++ >= 2);      }
     }
   }
 
