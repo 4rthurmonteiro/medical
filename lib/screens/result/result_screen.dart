@@ -54,10 +54,10 @@ class _ResultScreenState extends State<ResultScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Paciente"),
+        title: Text(patient.name),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => push(context, CategoriesScreen()),
+        onPressed: () => push(context, CategoriesScreen(patientId: patient.id,)),
         child: Icon(Icons.assignment),
 
 

@@ -3,7 +3,7 @@ import 'package:medical/utils/nav.dart';
 
 import '../../equations/equations_screen.dart';
 
-Widget pulmonaryCard(BuildContext context){
+Widget pulmonaryCard(BuildContext context, int patientId){
   return GestureDetector(
       child: Padding(
         padding: EdgeInsets.only(bottom: 0.0),
@@ -52,5 +52,5 @@ Widget pulmonaryCard(BuildContext context){
           ),
         ),
       ),
-      onTap: () => push(context, EquationsScreen()));
+      onTap: () => push(context, EquationsScreen(patientId: patientId,)));
 }

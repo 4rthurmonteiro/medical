@@ -18,8 +18,14 @@ Widget resultCard(BuildContext context, Result item){
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(item.equation ?? ""),
+                      GestureDetector(
+                          child: Icon(Icons.picture_as_pdf,
+                          ),
+                      onTap: () => print("pdf"),
+                      )
                     ],
                   ),
                   SizedBox(
@@ -45,10 +51,5 @@ Widget resultCard(BuildContext context, Result item){
         ),
       ),
     ),
-    onTap: (){
-//      showModalBottomSheet(
-//          context: context,
-//          builder: (context) => PatientSheet(patient: item,));
-    },
   );
 }

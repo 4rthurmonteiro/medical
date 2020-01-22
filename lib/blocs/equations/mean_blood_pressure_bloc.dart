@@ -1,4 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:medical/models/result.dart';
 import 'package:medical/repository/result_repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -18,25 +19,67 @@ class MeanBloodPressureBloc extends BlocBase {
 
   Result unsavedData = new Result();
 
-  MeanBloodPressureBloc(){
+  final int patientId;
+
+  MeanBloodPressureBloc({@required this.patientId}){
 
     _createdController.add(false);
+
+    unsavedData.patientId = patientId;
 
    _dataController.add(unsavedData);
   }
 
-  Future<bool> save() async {
-    return false;
+  Future<bool> save(String result) async {
+
+    _loadingController.add(true);
+
+
+
+    try {
+
+      unsavedData.equation = "PAM (Pressão arterial média)";
+      unsavedData.result = result;
+      unsavedData.category = "Cardiologia";
+      unsavedData.resultValue = "Teste";
+
+
+      bool success =
+      await _resultRepository.save(unsavedData) == null ? false : true;
+
+      _createdController.add(true);
+      _loadingController.add(false);
+
+      return success;
+    } catch (e) {
+      _loadingController.add(false);
+
+      return false;
+    }
+
+
   }
 
-  void savePAS(String value){
+
+
+  String equation(String pas, String pad){
+     try{
+
+       double value1 = double.parse(pas);
+       double value2 = double.parse(pad);
+
+        double value = (value1 + 2*value2)/3;
+
+        return value.toStringAsFixed(1);
+
+      }catch(e){
+        print(e);
+        return "";
+      }
+
+
 
   }
-
-  void savePAD(String value){
-
-  }
-
 
   @override
   void dispose() {

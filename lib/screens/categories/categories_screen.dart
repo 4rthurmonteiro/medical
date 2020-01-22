@@ -6,11 +6,18 @@ import 'package:medical/utils/nav.dart';
 import 'cards/pulmonary_card.dart';
 
 class CategoriesScreen extends StatefulWidget {
+  final int patientId;
+
+  CategoriesScreen({@required this.patientId});
+
   @override
   _CategoriesScreenState createState() => _CategoriesScreenState();
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
+
+  int get patientId => widget.patientId;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,8 +26,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       ),
       body: Column(
         children: <Widget>[
-          cardioCard(context),
-          pulmonaryCard(context)
+          cardioCard(context, patientId),
+          pulmonaryCard(context, patientId)
 
         ],
       ),

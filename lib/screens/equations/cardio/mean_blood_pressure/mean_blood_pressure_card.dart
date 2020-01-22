@@ -3,7 +3,7 @@ import 'package:medical/screens/equations/cardio/mean_blood_pressure/mean_blood_
 import 'package:medical/utils/nav.dart';
 
 
-Widget meanBloodPressureCard(BuildContext context){
+Widget meanBloodPressureCard(BuildContext context, int patientId){
   return GestureDetector(
       child: Padding(
         padding: EdgeInsets.only(bottom: 0.0),
@@ -52,5 +52,5 @@ Widget meanBloodPressureCard(BuildContext context){
           ),
         ),
       ),
-      onTap: () => push(context, MeanBloodPressureScreen()));
+      onTap: () => push(context, MeanBloodPressureScreen(patientId: patientId,)));
 }

@@ -9,22 +9,31 @@ import 'package:medical/utils/styles.dart';
 import 'package:medical/validators/sign_up_validators.dart';
 
 class MeanBloodPressureScreen extends StatefulWidget {
+  final int patientId;
+
+  MeanBloodPressureScreen({@required this.patientId});
+
   @override
   _MeanBloodPressureScreenState createState() => _MeanBloodPressureScreenState();
 }
 
 class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with SignUpValidators {
 
+  int get patientId => widget.patientId;
+
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   MeanBloodPressureBloc _bloc;
 
+  TextEditingController _pad = TextEditingController();
+  TextEditingController _pas = TextEditingController();
+  TextEditingController _pam = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _bloc = MeanBloodPressureBloc();
+    _bloc = MeanBloodPressureBloc(patientId: patientId);
   }
 
 
@@ -43,8 +52,7 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
             stream: _bloc.outCreated,
             initialData: false,
             builder: (context, snapshot) {
-              return Text(
-                  snapshot.data ? "Editar paciente" : "Cadastrar paciente");
+              return Text("PAM (Pressão arterial média)");
             }),
       ),
       floatingActionButton: StreamBuilder<bool>(
@@ -53,7 +61,7 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
           builder: (context, snapshot) {
             return FloatingActionButton(
               onPressed: snapshot.data ? null : saveResult,
-              child: Icon(Icons.save),
+              child: Icon(Icons.assignment),
             );
           }),
       body: Stack(
@@ -69,29 +77,67 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextFormField(
+                            controller: _pas,
                             validator: validateNotEmpty,
                             cursorColor: textColor,
                             style: textFormFieldStyle,
-                            onSaved: _bloc.savePAS,
                             decoration: equationDecoration(
                                 label: "PAS", hint: "em mmHg"),
-                            keyboardType: TextInputType.number,
+                            onChanged: (value){
+                              _pam.text = _bloc.equation(_pas.text, _pad.text);
+                            },
+//                            keyboardType: TextInputType.numberWithOptions(decimal: true),
 
                           ),
                           SizedBox(
                             height: 8,
                           ),
                           TextFormField(
+                            controller: _pad,
                             validator: validateNotEmpty,
-                            onSaved: _bloc.savePAS,
                             cursorColor: textColor,
                             style: textFormFieldStyle,
                             decoration: equationDecoration(
                                 label: "PAD", hint: "em mmHg"),
-                            keyboardType: TextInputType.number,
+//                            keyboardType: TextInputType.numberWithOptions(decimal: true),
+
+                            onChanged: (value){
+                              _pam.text = _bloc.equation(_pas.text, _pad.text);
+                            },
                           ),
+                          SizedBox(
+                            height: 8,
+                          ),
+
+                          Divider(thickness: 5,),
+
+                          SizedBox(
+                            height: 8,
+                          ),
+                          TextFormField(
+                            enabled: false,
+                            controller: _pam,
+                            validator: validateNotEmpty,
+                            cursorColor: textColor,
+                            style: textFormFieldStyle,
+                            decoration: equationDecoration(
+                                label: "PAM", hint: "em mmHg"),
+//                            keyboardType: TextInputType.numberWithOptions(decimal: true),
+
+
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+
+                          Text("PAS: pressão arterial sistólica"),
+                          Text("PAD: pressão arterial diastólica"),
+                          Text("PAM: pressão arterial média")
+
+
                         ],
                       ),
                     ),
@@ -115,7 +161,7 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
         duration: Duration(minutes: 1),
       ));
 
-      bool success = await _bloc.save();
+      bool success = await _bloc.save(_pam.text);
 
       _scaffoldKey.currentState.removeCurrentSnackBar();
 
@@ -128,9 +174,10 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
 
       if (success) {
         EventBus.get(context).sendEvent(Event("salvar", "resultado"));
-        Navigator.of(context).pop();
-      }
+        int count = 0;
+        Navigator.of(context).popUntil((_) => count++ >= 3);      }
     }
   }
+
 
 }
