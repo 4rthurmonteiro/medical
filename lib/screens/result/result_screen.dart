@@ -55,6 +55,7 @@ class _ResultScreenState extends State<ResultScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(patient.name),
+        centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => push(context, CategoriesScreen(patientId: patient.id,)),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medical/utils/nav.dart';
 
-import '../../equations/equations_screen.dart';
+import '../../equations/cardio/cardio_equations_screen.dart';
 
 Widget cardioCard(BuildContext context, int patientId){
   return GestureDetector(
@@ -52,5 +52,5 @@ Widget cardioCard(BuildContext context, int patientId){
           ),
         ),
       ),
-      onTap: () => push(context, EquationsScreen(patientId: patientId,)));
+      onTap: () => push(context, CardioEquationsScreen(patientId: patientId,)));
 }

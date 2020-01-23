@@ -10,7 +10,7 @@ class DrawerList extends StatelessWidget {
       accountName: Text("Doutor"),
       accountEmail: Text("doutor@medical.com.br"),
       currentAccountPicture: CircleAvatar(
-        backgroundImage: AssetImage("assets/images/logo.png"),
+        backgroundImage: AssetImage("assets/images/person.png"),
         backgroundColor: Colors.white,
       ),
     );
@@ -24,23 +24,18 @@ class DrawerList extends StatelessWidget {
           children: <Widget>[
             _header(),
             ListTile(
-              leading: Icon(Icons.language),
-              title: Text("Idioma"),
-              trailing: Icon(Icons.arrow_forward),
+              leading: Icon(Icons.info),
+              title: Text("Sobre"),
+              trailing: Icon(Icons.arrow_forward_ios),
               onTap: () => {},
             ),
             ListTile(
-              leading: Icon(Icons.vpn_key),
-              title: Text("Alterar senha"),
-              trailing: Icon(Icons.arrow_forward),
+              leading: Icon(Icons.help),
+              title: Text("Ajuda"),
+              trailing: Icon(Icons.arrow_forward_ios),
               onTap: () => {},
             ),
-            ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text("Logout"),
-              trailing: Icon(Icons.arrow_forward),
-              onTap: () => {},
-            )
+
           ],
         ),
       ),

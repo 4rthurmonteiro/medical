@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:medical/screens/equations/cardio/mean_blood_pressure/mean_blood_pressure_card.dart';
 
-class EquationsScreen extends StatefulWidget {
+class CardioEquationsScreen extends StatefulWidget {
   final int patientId;
 
-  EquationsScreen({@required this.patientId});
+  CardioEquationsScreen({@required this.patientId});
 
   @override
-  _EquationsScreenState createState() => _EquationsScreenState();
+  _CardioEquationsScreenState createState() => _CardioEquationsScreenState();
 }
 
-class _EquationsScreenState extends State<EquationsScreen> {
+class _CardioEquationsScreenState extends State<CardioEquationsScreen> {
 
   int get patientId => widget.patientId;
 
@@ -19,6 +19,7 @@ class _EquationsScreenState extends State<EquationsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Cardiologia"),
+        centerTitle: true,
       ),
       body: Column(
         children: <Widget>[

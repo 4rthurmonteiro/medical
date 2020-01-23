@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medical/screens/categories/cards/cardio_card.dart';
-import 'package:medical/screens/equations/equations_screen.dart';
+import 'package:medical/screens/equations/cardio/cardio_equations_screen.dart';
 import 'package:medical/utils/nav.dart';
 
 import 'cards/pulmonary_card.dart';
@@ -23,6 +23,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Categorias"),
+        centerTitle: true,
       ),
       body: Column(
         children: <Widget>[

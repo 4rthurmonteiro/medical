@@ -29,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       drawer: DrawerList(),
       appBar: AppBar(
+        centerTitle: true,
         title: Text("Paciente(s)"),
       ),
       floatingActionButton: FloatingActionButton(

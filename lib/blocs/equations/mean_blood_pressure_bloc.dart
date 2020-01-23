@@ -42,7 +42,8 @@ class MeanBloodPressureBloc extends BlocBase {
       unsavedData.result = result;
       unsavedData.category = "Cardiologia";
       unsavedData.resultValue = "Teste";
-
+      unsavedData.dateResult = DateTime.now().toIso8601String();
+      unsavedData.professional = "Doutor";
 
       bool success =
       await _resultRepository.save(unsavedData) == null ? false : true;
