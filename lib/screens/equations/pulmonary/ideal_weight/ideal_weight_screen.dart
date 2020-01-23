@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:medical/blocs/equations/cardio/mean_blood_pressure_bloc.dart';
+import 'package:medical/blocs/equations/cardio/imc_bloc.dart';
+import 'package:medical/blocs/equations/cardio/ldl_bloc.dart';
 import 'package:medical/event_bus/event_bus.dart';
 import 'package:medical/models/event.dart';
 import 'package:medical/models/result.dart';
@@ -8,32 +9,32 @@ import 'package:medical/utils/decorations.dart';
 import 'package:medical/utils/styles.dart';
 import 'package:medical/validators/sign_up_validators.dart';
 
-class MeanBloodPressureScreen extends StatefulWidget {
+class IdealWeightScreen extends StatefulWidget {
   final int patientId;
 
-  MeanBloodPressureScreen({@required this.patientId});
+  IdealWeightScreen({@required this.patientId});
 
   @override
-  _MeanBloodPressureScreenState createState() => _MeanBloodPressureScreenState();
+  _IdealWeightScreenState createState() => _IdealWeightScreenState();
 }
 
-class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with SignUpValidators {
+class _IdealWeightScreenState extends State<IdealWeightScreen> with SignUpValidators {
 
   int get patientId => widget.patientId;
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  MeanBloodPressureBloc _bloc;
+  ImcBloc _bloc;
 
-  TextEditingController _pad = TextEditingController();
-  TextEditingController _pas = TextEditingController();
-  TextEditingController _pam = TextEditingController();
+  TextEditingController _peso = TextEditingController();
+  TextEditingController _altura = TextEditingController();
+  TextEditingController _imc = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _bloc = MeanBloodPressureBloc(patientId: patientId);
+    _bloc = ImcBloc(patientId: patientId);
   }
 
 
@@ -53,7 +54,7 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
             stream: _bloc.outCreated,
             initialData: false,
             builder: (context, snapshot) {
-              return Text("PAM (Pressão arterial média)");
+              return Text("IMC(Íncide de Massa Corporal)");
             }),
       ),
       floatingActionButton: StreamBuilder<bool>(
@@ -81,14 +82,14 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextFormField(
-                            controller: _pas,
+                            controller: _peso,
                             validator: validateNotEmpty,
                             cursorColor: textColor,
                             style: textFormFieldStyle,
                             decoration: equationDecoration(
-                                label: "PAS", hint: "em mmHg"),
+                                label: "Peso", hint: "em kg"),
                             onChanged: (value){
-                              _pam.text = _bloc.equation(_pas.text, _pad.text);
+                              _imc.text = _bloc.equation(_peso.text, _altura.text);
                             },
                             keyboardType: TextInputType.numberWithOptions(decimal: true),
 
@@ -97,16 +98,16 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
                             height: 8,
                           ),
                           TextFormField(
-                            controller: _pad,
+                            controller: _altura,
                             validator: validateNotEmpty,
                             cursorColor: textColor,
                             style: textFormFieldStyle,
                             decoration: equationDecoration(
-                                label: "PAD", hint: "em mmHg"),
+                                label: "Altura", hint: "em metros"),
                             keyboardType: TextInputType.numberWithOptions(decimal: true),
 
                             onChanged: (value){
-                              _pam.text = _bloc.equation(_pas.text, _pad.text);
+                              _imc.text = _bloc.equation(_peso.text, _altura.text);
                             },
                           ),
                           SizedBox(
@@ -120,12 +121,12 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
                           ),
                           TextFormField(
                             enabled: false,
-                            controller: _pam,
+                            controller: _imc,
                             validator: validateNotEmpty,
                             cursorColor: textColor,
                             style: textFormFieldStyle,
                             decoration: equationDecoration(
-                                label: "PAM", hint: "em mmHg"),
+                                label: "IMC", hint: "IMC"),
 //                            keyboardType: TextInputType.numberWithOptions(decimal: true),
 
 
@@ -133,11 +134,6 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
                           SizedBox(
                             height: 20,
                           ),
-
-                          Text("PAS: pressão arterial sistólica"),
-                          Text("PAD: pressão arterial diastólica"),
-                          Text("PAM: pressão arterial média")
-
 
                         ],
                       ),
@@ -162,7 +158,7 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
         duration: Duration(minutes: 1),
       ));
 
-      bool success = await _bloc.save(_pam.text);
+      bool success = await _bloc.save(_imc.text);
 
       _scaffoldKey.currentState.removeCurrentSnackBar();
 

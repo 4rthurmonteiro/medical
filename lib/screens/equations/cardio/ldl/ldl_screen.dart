@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medical/blocs/equations/cardio/mean_blood_pressure_bloc.dart';
+import 'package:medical/blocs/equations/cardio/ldl_bloc.dart';
 import 'package:medical/event_bus/event_bus.dart';
 import 'package:medical/models/event.dart';
 import 'package:medical/models/result.dart';
@@ -8,32 +8,33 @@ import 'package:medical/utils/decorations.dart';
 import 'package:medical/utils/styles.dart';
 import 'package:medical/validators/sign_up_validators.dart';
 
-class MeanBloodPressureScreen extends StatefulWidget {
+class LdlScreen extends StatefulWidget {
   final int patientId;
 
-  MeanBloodPressureScreen({@required this.patientId});
+  LdlScreen({@required this.patientId});
 
   @override
-  _MeanBloodPressureScreenState createState() => _MeanBloodPressureScreenState();
+  _LdlScreenState createState() => _LdlScreenState();
 }
 
-class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with SignUpValidators {
+class _LdlScreenState extends State<LdlScreen> with SignUpValidators {
 
   int get patientId => widget.patientId;
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  MeanBloodPressureBloc _bloc;
+  LdlBloc _bloc;
 
-  TextEditingController _pad = TextEditingController();
-  TextEditingController _pas = TextEditingController();
-  TextEditingController _pam = TextEditingController();
+  TextEditingController _ct = TextEditingController();
+  TextEditingController _hdl = TextEditingController();
+  TextEditingController _tg = TextEditingController();
+  TextEditingController _ldl = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _bloc = MeanBloodPressureBloc(patientId: patientId);
+    _bloc = LdlBloc(patientId: patientId);
   }
 
 
@@ -53,7 +54,7 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
             stream: _bloc.outCreated,
             initialData: false,
             builder: (context, snapshot) {
-              return Text("PAM (Pressão arterial média)");
+              return Text("LDL-Colesterol");
             }),
       ),
       floatingActionButton: StreamBuilder<bool>(
@@ -81,14 +82,14 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextFormField(
-                            controller: _pas,
+                            controller: _ct,
                             validator: validateNotEmpty,
                             cursorColor: textColor,
                             style: textFormFieldStyle,
                             decoration: equationDecoration(
-                                label: "PAS", hint: "em mmHg"),
+                                label: "CT", hint: "em mg/dL"),
                             onChanged: (value){
-                              _pam.text = _bloc.equation(_pas.text, _pad.text);
+                              _ldl.text = _bloc.equation(_ct.text, _hdl.text,_tg.text);
                             },
                             keyboardType: TextInputType.numberWithOptions(decimal: true),
 
@@ -97,16 +98,32 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
                             height: 8,
                           ),
                           TextFormField(
-                            controller: _pad,
+                            controller: _hdl,
                             validator: validateNotEmpty,
                             cursorColor: textColor,
                             style: textFormFieldStyle,
                             decoration: equationDecoration(
-                                label: "PAD", hint: "em mmHg"),
+                                label: "HDL", hint: "em mg/dL"),
                             keyboardType: TextInputType.numberWithOptions(decimal: true),
 
                             onChanged: (value){
-                              _pam.text = _bloc.equation(_pas.text, _pad.text);
+                              _ldl.text = _bloc.equation(_ct.text, _hdl.text,_tg.text);
+                            },
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+
+                          TextFormField(
+                            controller: _tg,
+                            validator: validateNotEmpty,
+                            cursorColor: textColor,
+                            style: textFormFieldStyle,
+                            decoration: equationDecoration(
+                                label: "TG", hint: "em mg/dL"),
+                            keyboardType: TextInputType.numberWithOptions(decimal: true),
+                            onChanged: (value){
+                              _ldl.text = _bloc.equation(_ct.text, _hdl.text,_tg.text);
                             },
                           ),
                           SizedBox(
@@ -120,12 +137,12 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
                           ),
                           TextFormField(
                             enabled: false,
-                            controller: _pam,
+                            controller: _ldl,
                             validator: validateNotEmpty,
                             cursorColor: textColor,
                             style: textFormFieldStyle,
                             decoration: equationDecoration(
-                                label: "PAM", hint: "em mmHg"),
+                                label: "LDL", hint: "em mg/dL"),
 //                            keyboardType: TextInputType.numberWithOptions(decimal: true),
 
 
@@ -134,11 +151,10 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
                             height: 20,
                           ),
 
-                          Text("PAS: pressão arterial sistólica"),
-                          Text("PAD: pressão arterial diastólica"),
-                          Text("PAM: pressão arterial média")
-
-
+                          Text("LDL: LDL-colesterol"),
+                          Text("CT: colesterol total"),
+                          Text("HDL: HDL-colesterol"),
+                          Text("TG: triglicerídeos")
                         ],
                       ),
                     ),
@@ -162,7 +178,7 @@ class _MeanBloodPressureScreenState extends State<MeanBloodPressureScreen> with 
         duration: Duration(minutes: 1),
       ));
 
-      bool success = await _bloc.save(_pam.text);
+      bool success = await _bloc.save(_ldl.text);
 
       _scaffoldKey.currentState.removeCurrentSnackBar();
 

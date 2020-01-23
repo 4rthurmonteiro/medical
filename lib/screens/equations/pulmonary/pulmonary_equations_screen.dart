@@ -3,16 +3,16 @@ import 'package:medical/screens/equations/cardio/imc/imc_card.dart';
 import 'package:medical/screens/equations/cardio/ldl/ldl_card.dart';
 import 'package:medical/screens/equations/cardio/mean_blood_pressure/mean_blood_pressure_card.dart';
 
-class CardioEquationsScreen extends StatefulWidget {
+class PulmonaryEquationsScreen extends StatefulWidget {
   final int patientId;
 
-  CardioEquationsScreen({@required this.patientId});
+  PulmonaryEquationsScreen({@required this.patientId});
 
   @override
-  _CardioEquationsScreenState createState() => _CardioEquationsScreenState();
+  _PulmonaryEquationsScreenState createState() => _PulmonaryEquationsScreenState();
 }
 
-class _CardioEquationsScreenState extends State<CardioEquationsScreen> {
+class _PulmonaryEquationsScreenState extends State<PulmonaryEquationsScreen> {
 
   int get patientId => widget.patientId;
 
@@ -20,7 +20,7 @@ class _CardioEquationsScreenState extends State<CardioEquationsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cardiologia"),
+        title: Text("Pulmonar"),
         centerTitle: true,
       ),
       body: Column(
