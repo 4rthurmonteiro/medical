@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:medical/screens/equations/pulmonary/tidal_volume/tidal_volume_screen.dart';
 import 'package:medical/utils/nav.dart';
 
-import '../../equations/cardio/cardio_equations_screen.dart';
-import '../../equations/pulmonary/pulmonary_equations_screen.dart';
 
-Widget pulmonaryCard(BuildContext context, int patientId){
+Widget tidalVolumeCard(BuildContext context, int patientId){
   return GestureDetector(
       child: Padding(
         padding: EdgeInsets.only(bottom: 0.0),
@@ -27,7 +26,7 @@ Widget pulmonaryCard(BuildContext context, int patientId){
                         padding: EdgeInsets.only(left: 16.0, right: 16.0),
                         // MediaQuery.of(context).size.width - 300
                         child: Text(
-                          "Pulmonar", style: TextStyle(fontSize: 20),
+                          "Volume Corrente", style: TextStyle(fontSize: 20),
                         ),
                       ),
                     ],
@@ -53,5 +52,5 @@ Widget pulmonaryCard(BuildContext context, int patientId){
           ),
         ),
       ),
-      onTap: () => push(context, PulmonaryEquationsScreen(patientId: patientId,)));
+      onTap: () => push(context, TidalVolumeScreen(patientId: patientId,)));
 }

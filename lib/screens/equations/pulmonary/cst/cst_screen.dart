@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:medical/blocs/equations/cardio/imc_bloc.dart';
 import 'package:medical/blocs/equations/cardio/ldl_bloc.dart';
+import 'package:medical/blocs/equations/pulmonary/cst_bloc.dart';
+import 'package:medical/blocs/equations/pulmonary/rva_bloc.dart';
+import 'package:medical/blocs/equations/pulmonary/tidal_volume_bloc.dart';
 import 'package:medical/event_bus/event_bus.dart';
 import 'package:medical/models/event.dart';
 import 'package:medical/models/result.dart';
@@ -9,32 +12,34 @@ import 'package:medical/utils/decorations.dart';
 import 'package:medical/utils/styles.dart';
 import 'package:medical/validators/sign_up_validators.dart';
 
-class IdealWeightScreen extends StatefulWidget {
+class CstScreen extends StatefulWidget {
   final int patientId;
 
-  IdealWeightScreen({@required this.patientId});
+  CstScreen({@required this.patientId});
 
   @override
-  _IdealWeightScreenState createState() => _IdealWeightScreenState();
+  _CstScreenState createState() => _CstScreenState();
 }
 
-class _IdealWeightScreenState extends State<IdealWeightScreen> with SignUpValidators {
+class _CstScreenState extends State<CstScreen> with SignUpValidators {
 
   int get patientId => widget.patientId;
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  ImcBloc _bloc;
+  CstBloc _bloc;
 
-  TextEditingController _peso = TextEditingController();
-  TextEditingController _altura = TextEditingController();
-  TextEditingController _imc = TextEditingController();
+  TextEditingController _vc = TextEditingController();
+  TextEditingController _ppausa = TextEditingController();
+  TextEditingController _peep = TextEditingController();
+
+  TextEditingController _cst = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _bloc = ImcBloc(patientId: patientId);
+    _bloc = CstBloc(patientId: patientId);
   }
 
 
@@ -54,7 +59,7 @@ class _IdealWeightScreenState extends State<IdealWeightScreen> with SignUpValida
             stream: _bloc.outCreated,
             initialData: false,
             builder: (context, snapshot) {
-              return Text("IMC(Íncide de Massa Corporal)");
+              return Text("CST (Complacência estática)");
             }),
       ),
       floatingActionButton: StreamBuilder<bool>(
@@ -82,14 +87,14 @@ class _IdealWeightScreenState extends State<IdealWeightScreen> with SignUpValida
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextFormField(
-                            controller: _peso,
+                            controller: _vc,
                             validator: validateNotEmpty,
                             cursorColor: textColor,
                             style: textFormFieldStyle,
                             decoration: equationDecoration(
-                                label: "Peso", hint: "em kg"),
-                            onChanged: (value){
-                              _imc.text = _bloc.equation(_peso.text, _altura.text);
+                                label: "VC", hint: "em ml/kg"),
+                            onChanged: (value)  {
+                              _cst.text =  _bloc.equation(_vc.text, _ppausa.text, _peep.text);
                             },
                             keyboardType: TextInputType.numberWithOptions(decimal: true),
 
@@ -97,23 +102,40 @@ class _IdealWeightScreenState extends State<IdealWeightScreen> with SignUpValida
                           SizedBox(
                             height: 8,
                           ),
+
                           TextFormField(
-                            controller: _altura,
+                            controller: _ppausa,
                             validator: validateNotEmpty,
                             cursorColor: textColor,
                             style: textFormFieldStyle,
                             decoration: equationDecoration(
-                                label: "Altura", hint: "em metros"),
+                                label: "Ppausa", hint: "em cmH2O"),
+                            onChanged: (value)  {
+                              _cst.text =  _bloc.equation(_vc.text, _ppausa.text, _peep.text);
+                            },
                             keyboardType: TextInputType.numberWithOptions(decimal: true),
 
-                            onChanged: (value){
-                              _imc.text = _bloc.equation(_peso.text, _altura.text);
-                            },
                           ),
                           SizedBox(
                             height: 8,
                           ),
 
+                          TextFormField(
+                            controller: _peep,
+                            validator: validateNotEmpty,
+                            cursorColor: textColor,
+                            style: textFormFieldStyle,
+                            decoration: equationDecoration(
+                                label: "Fluxo", hint: "em l.s"),
+                            onChanged: (value)  {
+                              _cst.text =  _bloc.equation(_vc.text, _ppausa.text, _peep.text);
+                            },
+                            keyboardType: TextInputType.numberWithOptions(decimal: true),
+
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
                           Divider(thickness: 5,),
 
                           SizedBox(
@@ -121,12 +143,12 @@ class _IdealWeightScreenState extends State<IdealWeightScreen> with SignUpValida
                           ),
                           TextFormField(
                             enabled: false,
-                            controller: _imc,
+                            controller: _cst,
                             validator: validateNotEmpty,
                             cursorColor: textColor,
                             style: textFormFieldStyle,
                             decoration: equationDecoration(
-                                label: "IMC", hint: "IMC"),
+                                label: "CST", hint: "Complacência estática"),
 //                            keyboardType: TextInputType.numberWithOptions(decimal: true),
 
 
@@ -134,6 +156,13 @@ class _IdealWeightScreenState extends State<IdealWeightScreen> with SignUpValida
                           SizedBox(
                             height: 20,
                           ),
+
+
+
+                          Text("VC: volume correntes."),
+                          Text("Ppausa: pressão alveolar medida ao final da inspiração por pausa de 2 a 3s."),
+                          Text("PEEP: pressão alveolar medida ao final da expiração por pausa de 3s.")
+
 
                         ],
                       ),
@@ -158,7 +187,7 @@ class _IdealWeightScreenState extends State<IdealWeightScreen> with SignUpValida
         duration: Duration(minutes: 1),
       ));
 
-      bool success = await _bloc.save(_imc.text);
+      bool success = await _bloc.save(_peep.text);
 
       _scaffoldKey.currentState.removeCurrentSnackBar();
 

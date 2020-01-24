@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:medical/screens/equations/cardio/imc/imc_screen.dart';
-import 'package:medical/screens/equations/cardio/ldl/ldl_screen.dart';
-import 'package:medical/screens/equations/cardio/mean_blood_pressure/mean_blood_pressure_screen.dart';
-import 'package:medical/screens/equations/pulmonary/ideal_weight/ideal_weight_screen.dart';
+import 'package:medical/screens/equations/pulmonary/rva/rva_screen.dart';
+import 'package:medical/screens/equations/pulmonary/tidal_volume/tidal_volume_screen.dart';
 import 'package:medical/utils/nav.dart';
 
 
-Widget idealWeightCard(BuildContext context, int patientId){
+Widget rvaCard(BuildContext context, int patientId){
   return GestureDetector(
       child: Padding(
         padding: EdgeInsets.only(bottom: 0.0),
@@ -29,7 +27,7 @@ Widget idealWeightCard(BuildContext context, int patientId){
                         padding: EdgeInsets.only(left: 16.0, right: 16.0),
                         // MediaQuery.of(context).size.width - 300
                         child: Text(
-                          "Peso Ideal", style: TextStyle(fontSize: 20),
+                          "RVA(Resistência de vias Aéreas)", style: TextStyle(fontSize: 20),
                         ),
                       ),
                     ],
@@ -55,5 +53,5 @@ Widget idealWeightCard(BuildContext context, int patientId){
           ),
         ),
       ),
-      onTap: () => push(context, IdealWeightScreen(patientId: patientId,)));
+      onTap: () => push(context, RvaScreen(patientId: patientId,)));
 }

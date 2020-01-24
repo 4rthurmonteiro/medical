@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:medical/screens/equations/cardio/imc/imc_card.dart';
 import 'package:medical/screens/equations/cardio/ldl/ldl_card.dart';
 import 'package:medical/screens/equations/cardio/mean_blood_pressure/mean_blood_pressure_card.dart';
+import 'package:medical/screens/equations/pulmonary/cst/cst_card.dart';
+import 'package:medical/screens/equations/pulmonary/rva/rva_card.dart';
+import 'package:medical/screens/equations/pulmonary/tidal_volume/tidal_volume_card.dart';
 
 class PulmonaryEquationsScreen extends StatefulWidget {
   final int patientId;
@@ -25,9 +28,9 @@ class _PulmonaryEquationsScreenState extends State<PulmonaryEquationsScreen> {
       ),
       body: Column(
         children: <Widget>[
-          meanBloodPressureCard(context, patientId),
-          ldlCard(context, patientId),
-          imcCard(context, patientId)
+          tidalVolumeCard(context, patientId),
+          rvaCard(context, patientId),
+          cstCard(context, patientId)
         ],
       ),
     );

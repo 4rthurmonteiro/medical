@@ -4,9 +4,13 @@ import 'package:medical/models/result.dart';
 import 'package:medical/repository/result_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ImcBloc extends BlocBase {
+import '../../../models/patient.dart';
+import '../../../repository/patient_repository.dart';
+
+class TidalVolumeBloc extends BlocBase {
 
   final _resultRepository = ResultRepository();
+  final _patientRepository = PatientRepository();
 
   final _dataController = BehaviorSubject<Result>();
   final _loadingController = BehaviorSubject<bool>();
@@ -21,43 +25,13 @@ class ImcBloc extends BlocBase {
 
   final int patientId;
 
-  ImcBloc({@required this.patientId}){
+  TidalVolumeBloc({@required this.patientId}){
 
     _createdController.add(false);
 
     unsavedData.patientId = patientId;
 
    _dataController.add(unsavedData);
-  }
-
-
-  String resultFunc(String value){
-
-    try{
-
-      double value1 = double.parse(value);
-
-      if(value1 < 18.5){
-        return "Abaixo do Peso";
-      }else if(value1 >= 18.5 && value1 <= 24.9){
-        return "Peso Normal";
-      }else if(value1 >= 25 && value1 <= 29.9){
-        return "Sobrepeso";
-      }else if(value1 >= 30 && value1 <= 34.9){
-        return "Obesidade";
-      }else if(value1 >= 35 && value1 <= 39.9){
-        return "Obesidade Moderada";
-      }else if(value1 >= 40 && value1 <= 49.9){
-        return "Obesidade Severa";
-      }else {
-        return "Obesidade Mórbida";
-      }
-
-    }catch(e){
-      return "Erro no cálculo";
-    }
-
-
   }
 
   Future<bool> save(String result) async {
@@ -68,10 +42,10 @@ class ImcBloc extends BlocBase {
 
     try {
 
-      unsavedData.equation = "IMC (Íncide de Massa Corporal)";
-      unsavedData.result = result;
-      unsavedData.category = "Cardiologia";
-      unsavedData.resultValue = resultFunc(result);
+      unsavedData.equation = "Volume Corrente";
+      unsavedData.result = result + " ml/kg";
+      unsavedData.category = "Pulmonar";
+      unsavedData.resultValue = "O volume corrente é o volume pulmonar que representa o volume normal do ar circulado entre uma inalação e exalação normal, sem um esforço suplementar. O valor do volume corrente de um adulto saudável é de aproximadamente 500 ml por inspiração ou 7 ml/kg de massa corporal.";
       unsavedData.dateResult = DateTime.now().toIso8601String();
       unsavedData.professional = "Doutor";
 
@@ -91,25 +65,28 @@ class ImcBloc extends BlocBase {
 
   }
 
+  Future<String> equation(String altura) async {
 
+    Patient patient = await _patientRepository.findById(patientId);
 
-  String equation(String peso, String altura){
      try{
 
-       double value1 = double.parse(peso);
-       double value2 = double.parse(altura);
+       double value1 = double.parse(altura);
 
-        double value = value1/(value2*value2);
+       double value;
 
-        return value.toStringAsFixed(1);
+       if(patient.gender == "M"){
+         value = 50 + (0.91 * (value1 - 152.4));
+       }else{
+         value = 45.5 + (0.91 *(value1 - 152.4));
+       }
+
+       return value.toStringAsFixed(1);
 
       }catch(e){
         print(e);
         return "";
       }
-
-
-
   }
 
   @override
